@@ -1,0 +1,9 @@
+@mixin class-grid($classes...) {
+    /* class-grid */
+    @each $class in $classes {
+        .#{$class} {
+            grid-area: #{$class};
+        }
+    }
+    /* end class-grid */
+}
