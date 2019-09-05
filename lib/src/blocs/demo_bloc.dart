@@ -51,20 +51,20 @@ class VictoryState extends DemoState {
   final String header =
       "Congratulations, you have run out of letters in the alphabet. "
       "I guess that means you win?";
-  
+
   @override
   final bool buttonsEnabled = false;
 }
 
 class ChallengeLog {
-  final String display;
-  final String prompt;
+  String display;
+  String prompt;
+  bool correct;
 
-  ChallengeLog({this.display, this.prompt});
-
-  Map<String, String> toJson() => {
+  Map<String, dynamic> toJson() => {
         "display": display,
         "prompt": prompt,
+        "correct": correct,
       };
 }
 
@@ -87,6 +87,7 @@ class DemoBloc extends Bloc<bool, DemoState> {
     } else if (prevState is DisplayState) {
       yield prevState;
     } else if (prevState is PromptState) {
+      log.last.correct = prevState.correct == event;
       if (prevState.correct == event) {
         charsCount++;
         if (charsCount > 26) {
@@ -119,7 +120,9 @@ class DemoBloc extends Bloc<bool, DemoState> {
     } else {
       prompt = shuffled[charsCount + _rand.nextInt(26 - charsCount)];
     }
-    log.add(ChallengeLog(display: display, prompt: prompt));
+    log.add(ChallengeLog()
+      ..display = display
+      ..prompt = prompt);
     yield PromptState(prompt, correct);
   }
 }
