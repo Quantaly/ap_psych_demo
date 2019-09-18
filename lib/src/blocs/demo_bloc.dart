@@ -29,8 +29,9 @@ class PromptState extends DemoState {
   @override
   final String header;
   final bool correct;
+  final DateTime start;
 
-  PromptState(this.header, this.correct);
+  PromptState(this.header, this.correct, this.start);
 }
 
 class EndState extends DemoState {
@@ -60,11 +61,13 @@ class ChallengeLog {
   String display;
   String prompt;
   bool correct;
+  int ms;
 
   Map<String, dynamic> toJson() => {
         "display": display,
         "prompt": prompt,
         "correct": correct,
+        "ms": ms,
       };
 }
 
@@ -87,7 +90,10 @@ class DemoBloc extends Bloc<bool, DemoState> {
     } else if (prevState is DisplayState) {
       yield prevState;
     } else if (prevState is PromptState) {
-      log.last.correct = prevState.correct == event;
+      log.last
+        ..correct = prevState.correct == event
+        ..ms = DateTime.now().millisecondsSinceEpoch -
+            prevState.start.millisecondsSinceEpoch;
       if (prevState.correct == event) {
         charsCount++;
         if (charsCount > 26) {
@@ -123,6 +129,6 @@ class DemoBloc extends Bloc<bool, DemoState> {
     log.add(ChallengeLog()
       ..display = display
       ..prompt = prompt);
-    yield PromptState(prompt, correct);
+    yield PromptState(prompt, correct, DateTime.now());
   }
 }
