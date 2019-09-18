@@ -1,6 +1,6 @@
 # ap_psych_demo
 
-A demo of a memory experiment for my AP Psychology class.
+A demo of a memory experiment (a version of the ["n-back task"](https://en.wikipedia.org/wiki/N-back)) for my AP Psychology class.
 
 Participants are presented with a string of characters, then a single character; they must then indicate whether or not the single character was part of the string.
 
