@@ -3,7 +3,7 @@ import 'dart:math' as math;
 
 import 'package:bloc/bloc.dart';
 
-typedef LogDownloader = void Function(List<ChallengeLog> log);
+typedef LogDownloader = void Function(List<ChallengeLog> log, bool startedWith);
 
 abstract class DemoState {
   String get header;
@@ -75,6 +75,7 @@ class DemoBloc extends Bloc<bool, DemoState> {
   int charsCount = 3;
   final List<ChallengeLog> log = [];
   final _rand = math.Random();
+  bool startedWith;
 
   final LogDownloader download;
   DemoBloc(this.download);
@@ -86,6 +87,7 @@ class DemoBloc extends Bloc<bool, DemoState> {
   Stream<DemoState> mapEventToState(bool event) async* {
     final prevState = currentState;
     if (prevState is InitialState) {
+      startedWith = event;
       yield* presentChallenge();
     } else if (prevState is DisplayState) {
       yield prevState;
@@ -97,13 +99,13 @@ class DemoBloc extends Bloc<bool, DemoState> {
       if (prevState.correct == event) {
         charsCount++;
         if (charsCount > 26) {
-          download(log);
+          download(log, startedWith);
           yield VictoryState();
           return;
         }
         yield* presentChallenge();
       } else {
-        download(log);
+        download(log, startedWith);
         yield EndState(charsCount);
       }
     } else if (prevState is EndState) {
