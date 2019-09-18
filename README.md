@@ -1,7 +1,13 @@
 # ap_psych_demo
 
-A web app that uses [AngularDart](https://webdev.dartlang.org/angular) and
-[AngularDart Components](https://webdev.dartlang.org/components).
+A demo of a memory experiment for my AP Psychology class.
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+Participants are presented with a string of characters, then a single character; they must then indicate whether or not the single character was part of the string.
+
+We will have multiple experimental groups (indicated with a "group" query parameter):
+- One group will be told the purpose is to test their memory
+- One group will be told the purpose is to test their character recognition
+- One group will be told the purpose is to test their reaction time
+- One group will be told nothing about the purpose (the "control group")
+
+Our results will be presented in class.
